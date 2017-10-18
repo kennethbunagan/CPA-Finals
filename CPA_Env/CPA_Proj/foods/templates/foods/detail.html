@@ -1,0 +1,31 @@
+{% extends 'foods/base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+<a href="{% url 'foods:productdetails-add' %}"><button type="submit" class="btn btn-success">
+<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Product Details
+</button></a>
+
+
+
+    <h2>{{ product.productname }}</h2>
+
+    {% for productdetails in product.productdetails_set.all %}
+        <h4>Php {{ productdetails.price }} / {{ productdetails.weight }}</h4>
+
+        <a href="{% url 'foods:productdetails-update' productdetails.id%}"><button type="submit" class="btn btn-warning">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Update Product Details
+        </button></a>
+
+        <form action="{% url 'foods:productdetails-delete' productdetails.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="productdetails_id" value="{{ productdetails.id }}"/>
+            <button type="submit" class="btn btn-danger btn-small">
+                Delete Product Details
+            </button>
+        </form>
+    {% endfor %}
+
+{% endblock %}

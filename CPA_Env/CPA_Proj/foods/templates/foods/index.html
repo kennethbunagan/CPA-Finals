@@ -1,0 +1,49 @@
+{% extends 'foods/base.html' %}
+
+{% block body %}
+
+<a href="{% url 'foods:product-add' %}"><button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Product
+        </button></a>
+
+<h2>List of Products:</h2>
+
+{% if all_products %}
+<style>
+ul {
+    list-style-type: none;
+
+    padding: 0
+    overflow: hidden;
+}
+li {
+    float: left;
+    margin-right: 100px;
+
+}
+</style>
+    <ul>
+        {% for products in all_products %}
+        <!--Searches the detail template in foods app-->
+            <li><h3><a href="{% url 'foods:detail' products.id %}">{{ products.productname }}</a></h3>
+
+        <a href="{% url 'foods:product-update' products.id %}"><button type="submit" class="btn btn-warning">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Update Product
+        </button></a>
+
+
+        <form action="{% url 'foods:product-delete' products.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="products_id" value="{{ products.id }}"/>
+            <button type="submit" class="btn btn-danger btn-small">
+                Delete Product
+            </button>
+        </form></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <h2>Product not found</h2>
+{% endif %}
+
+{% endblock %}
+
